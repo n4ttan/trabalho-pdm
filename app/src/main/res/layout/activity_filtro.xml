@@ -66,12 +66,10 @@
 
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/listViewFiltrado"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewFiltrado"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="#E0E0E0"
-        android:dividerHeight="1dp"
         android:padding="8dp"/>
 
 </LinearLayout>

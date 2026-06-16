@@ -39,7 +39,7 @@
         android:layout_height="56dp"
         android:text="Ver Todos os Chamados"
         android:textSize="16sp"
-        android:backgroundTint="#283593"
+        android:backgroundTint="#1A237E"
         android:layout_marginBottom="16dp"/>
 
     <Button
@@ -48,6 +48,24 @@
         android:layout_height="56dp"
         android:text="Buscar / Filtrar"
         android:textSize="16sp"
-        android:backgroundTint="#3949AB"/>
+        android:backgroundTint="#1A237E"/>
+
+    <Button
+        android:id="@+id/btnEstatisticas"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="Estatísticas"
+        android:textSize="16sp"
+        android:backgroundTint="#1A237E"
+        android:layout_marginTop="16dp"/>
+
+    <Button
+        android:id="@+id/btnSobre"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="Sobre o Sistema"
+        android:textSize="16sp"
+        android:backgroundTint="#1A237E"
+        android:layout_marginTop="16dp"/>
 
 </LinearLayout>

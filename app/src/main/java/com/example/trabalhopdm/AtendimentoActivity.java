@@ -1,6 +1,6 @@
 package com.example.trabalhopdm;
 
-import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -10,9 +10,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 public class AtendimentoActivity extends AppCompatActivity {
 
     TextView tvTitulo, tvLocal, tvDescricao, tvTipo;
@@ -21,6 +18,7 @@ public class AtendimentoActivity extends AppCompatActivity {
     Button btnAtualizar;
 
     String chamadoId;
+    DBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +33,8 @@ public class AtendimentoActivity extends AppCompatActivity {
         etSolucao = findViewById(R.id.etSolucao);
         spinnerStatus = findViewById(R.id.spinnerStatus);
         btnAtualizar = findViewById(R.id.btnAtualizar);
+
+        dbHelper = new DBHelper(this);
 
         // Popula o Spinner de status
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
@@ -55,62 +55,37 @@ public class AtendimentoActivity extends AppCompatActivity {
     }
 
     private void carregarChamado() {
-        try {
-            SharedPreferences prefs = getSharedPreferences("chamados", MODE_PRIVATE);
-            String json = prefs.getString("lista", "[]");
-            JSONArray lista = new JSONArray(json);
+        Cursor cursor = dbHelper.listarChamados();
 
-            // Procura o chamado pelo ID
-            for (int i = 0; i < lista.length(); i++) {
-                JSONObject chamado = lista.getJSONObject(i);
-                if (chamado.getString("id").equals(chamadoId)) {
+        while (cursor.moveToNext()) {
+            String id = cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COL_ID));
 
-                    // Preenche os campos com os dados do chamado
-                    tvTitulo.setText(chamado.getString("titulo"));
-                    tvLocal.setText(chamado.getString("local"));
-                    tvDescricao.setText(chamado.getString("descricao"));
-                    tvTipo.setText(chamado.getString("tipo"));
-                    etSolucao.setText(chamado.getString("solucao"));
+            if (id.equals(chamadoId)) {
+                tvTitulo.setText(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COL_TITULO)));
+                tvLocal.setText(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COL_LOCAL)));
+                tvDescricao.setText(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COL_DESCRICAO)));
+                tvTipo.setText(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COL_TIPO)));
+                etSolucao.setText(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COL_SOLUCAO)));
 
-                    // Seleciona o status atual no Spinner
-                    String status = chamado.getString("status");
-                    ArrayAdapter adapter = (ArrayAdapter) spinnerStatus.getAdapter();
-                    int pos = adapter.getPosition(status);
-                    spinnerStatus.setSelection(pos);
+                // Seleciona o status atual no Spinner
+                String status = cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COL_STATUS));
+                ArrayAdapter spinnerAdapter = (ArrayAdapter) spinnerStatus.getAdapter();
+                int pos = spinnerAdapter.getPosition(status);
+                spinnerStatus.setSelection(pos);
 
-                    break;
-                }
+                break;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+        cursor.close();
     }
 
     private void atualizarChamado() {
-        try {
-            SharedPreferences prefs = getSharedPreferences("chamados", MODE_PRIVATE);
-            String json = prefs.getString("lista", "[]");
-            JSONArray lista = new JSONArray(json);
+        String solucao = etSolucao.getText().toString().trim();
+        String status = spinnerStatus.getSelectedItem().toString();
 
-            // Procura e atualiza o chamado pelo ID
-            for (int i = 0; i < lista.length(); i++) {
-                JSONObject chamado = lista.getJSONObject(i);
-                if (chamado.getString("id").equals(chamadoId)) {
-                    chamado.put("solucao", etSolucao.getText().toString().trim());
-                    chamado.put("status", spinnerStatus.getSelectedItem().toString());
-                    lista.put(i, chamado);
-                    break;
-                }
-            }
+        dbHelper.atualizarChamado(chamadoId, solucao, status);
 
-            // Salva a lista atualizada
-            prefs.edit().putString("lista", lista.toString()).apply();
-
-            Toast.makeText(this, "Chamado atualizado!", Toast.LENGTH_SHORT).show();
-            finish();
-
-        } catch (Exception e) {
-            Toast.makeText(this, "Erro ao atualizar!", Toast.LENGTH_SHORT).show();
-        }
+        Toast.makeText(this, "Chamado atualizado!", Toast.LENGTH_SHORT).show();
+        finish();
     }
 }

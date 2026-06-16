@@ -15,12 +15,10 @@
         android:padding="24dp"
         android:background="#FFFFFF"/>
 
-    <ListView
-        android:id="@+id/listViewChamados"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewChamados"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="#E0E0E0"
-        android:dividerHeight="1dp"
         android:padding="8dp"/>
 
 </LinearLayout>

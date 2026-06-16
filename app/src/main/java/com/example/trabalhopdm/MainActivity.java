@@ -16,6 +16,8 @@ public class MainActivity extends AppCompatActivity {
         Button btnCadastrar = findViewById(R.id.btnCadastrar);
         Button btnLista = findViewById(R.id.btnLista);
         Button btnFiltro = findViewById(R.id.btnFiltro);
+        Button btnEstatisticas = findViewById(R.id.btnEstatisticas);
+        Button btnSobre = findViewById(R.id.btnSobre);
 
         // Quando clicar em "Novo Chamado", vai abrir a tela de cadastro
         btnCadastrar.setOnClickListener(v -> {
@@ -34,5 +36,16 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, FiltroActivity.class);
             startActivity(intent);
         });
+
+        btnEstatisticas.setOnClickListener(v -> {
+            Intent intent = new Intent(this, EstatisticasActivity.class);
+            startActivity(intent);
+        });
+
+        btnSobre.setOnClickListener(v -> {
+            Intent intent = new Intent(this, SobreActivity.class);
+            startActivity(intent);
+        });
+
     }
 }
