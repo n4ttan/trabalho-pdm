@@ -1,4 +1,10 @@
 <resources>
     <style name="Theme.TrabalhoPDM" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorControlNormal">#FFFFFF</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowWhite</item>
+    </style>
+
+    <style name="DrawerArrowWhite" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">#FFFFFF</item>
     </style>
 </resources>

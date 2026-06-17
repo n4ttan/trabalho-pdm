@@ -36,11 +36,7 @@ public class MainActivity extends AppCompatActivity {
         );
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-
-        // Força o ícone ☰ para branco
-        if (toolbar.getNavigationIcon() != null) {
-            toolbar.getNavigationIcon().setTint(android.graphics.Color.WHITE);
-        }
+        toggle.getDrawerArrowDrawable().setColor(android.graphics.Color.WHITE);
 
         // Navegação pelo menu lateral
         navigationView.setNavigationItemSelectedListener(item -> {
